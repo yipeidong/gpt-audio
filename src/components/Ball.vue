@@ -29,10 +29,10 @@ const status = ref<ChatStatus>(ChatStatus.ASSISTANT);
 const to_user = () => {
   status.value = ChatStatus.USER;
   cancel_animations(() => {
-    move_to(b1.value!, '50%', '42%', 200);
+    move_to(b1.value!, '50%', '43%', 200);
     move_to(b2.value!, '50%', '41%', 200);
-    move_to(b3.value!, '50%', '40%', 200);
-    move_to(b4.value!, '50%', '38%', 200, () => {
+    move_to(b3.value!, '50%', '48%', 200);
+    move_to(b4.value!, '50%', '35%', 200, () => {
       move_to(b1.value!, '50%', '40%', 200);
       move_to(b2.value!, '50%', '40%', 200);
       move_to(b3.value!, '50%', '40%', 200);
@@ -44,12 +44,10 @@ const to_user = () => {
     zoom(b3.value!, '10vw', '10vw', '50%', 80);
     zoom(b4.value!, '10vw', '10vw', '50%', 80);
 
-    setTimeout(() => {
-      zoom(b1.value!, '70vw', '70vw', '50%', 320);
-      zoom(b2.value!, '70vw', '70vw', '50%', 320);
-      zoom(b3.value!, '70vw', '70vw', '50%', 320);
-      zoom(b4.value!, '70vw', '70vw', '50%', 320);
-    }, 150)
+    zoom(b1.value!, '70vw', '70vw', '50%', 320);
+    zoom(b2.value!, '70vw', '70vw', '50%', 320);
+    zoom(b3.value!, '70vw', '70vw', '50%', 320);
+    zoom(b4.value!, '70vw', '70vw', '50%', 320);
   });
 }
 
@@ -69,11 +67,11 @@ const to_assistant = () => {
 
 const to_thinking = () => {
   status.value = ChatStatus.THINKING
-  to_circle(b1.value!, 20, 1, 5000);
-  to_circle(b2.value!, 20, 1, 5000);
-  to_circle(b3.value!, 20, 1, 5000);
-  to_circle(b4.value!, 20, 1, 5000);
-  to_circle(b5.value!, 20, 1, 5000);
+  to_circle(b1.value!, 20, 1, 115000);
+  to_circle(b2.value!, 20, 2, 115000);
+  to_circle(b3.value!, 20, 3, 115000);
+  to_circle(b4.value!, 20, 4, 115000);
+  to_circle(b5.value!, 20, 5, 115000);
 }
 
 const init_ball = (ele: HTMLDivElement) => {
@@ -105,7 +103,7 @@ onMounted(() => {
     if(status.value === ChatStatus.ASSISTANT) return to_user();
     if(status.value === ChatStatus.USER) return to_thinking();
     if(status.value === ChatStatus.THINKING) return to_assistant();
-  }, 5000);
+  }, 1500);
 });
 </script>
 
@@ -127,4 +125,7 @@ onMounted(() => {
   transform: translate(-50%, -50%);
 }
 
+.b5 {
+  background-color: red;
+}
 </style>

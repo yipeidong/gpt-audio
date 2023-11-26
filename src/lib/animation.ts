@@ -1,5 +1,5 @@
 
-const animations = [] as Animation[];
+let animations = [] as Animation[];
 
 export const move_to = (ele: Element, x: string, y: string, during: number, onfinished?: () => void, oncancel?: () => void) => {
   if(!(ele instanceof HTMLElement)) return;
@@ -49,6 +49,8 @@ export const zoom = (ele: Element, width: string, height: string, radius: string
   const curr_width = ele.style.width || '0';
   const curr_height = ele.style.height || '0';
   const curr_radius = ele.style.borderRadius || '0';
+
+  console.log(curr_width, curr_height, curr_radius);
 
   const anim = ele.animate(
     [
@@ -129,19 +131,20 @@ export const amp2 = (ele: Element, rate: number, during: number, onfinish?: () =
 export const to_circle = (ele: Element, radius: number, index: number, during: number, onfinish?: () => void, oncancel?: () => void) => {
   if(!(ele instanceof HTMLElement)) return;
 
-  const curr_width = ele.style.width || '20vw';
+  // const curr_width = ele.style.width || '20vw';
   // const curr_height = ele.style.height || '20vw';
   // const curr_radius = ele.style.borderRadius || '50%';
-  ele.style.width = '20vw';
-  ele.style.height = '30vw';
-  ele.style.borderRadius = '10vw';
+  ele.style.width = index === 5 ? '30vw' : '70vw';
+  ele.style.height = index === 5 ? '30vw' : '70vw';
+  ele.style.borderRadius = '50%';
 
-  const curr_left = ele.style.left || '50vw';
-  const curr_top = ele.style.top || '50vw';
+  const curr_left = ele.style.left || '50%';
+  const curr_top = ele.style.top || '50%';
+
   ele.style.left = curr_left;
   ele.style.top = curr_top;
 
-  const width_n = parseFloat(curr_width);
+  const width_n = 20;
 
   const CircleAngle = 6.2;
   const init_left = 50 + radius * Math.cos((CircleAngle*index)/5);
@@ -176,14 +179,19 @@ export const to_circle = (ele: Element, radius: number, index: number, during: n
         const ani = ele.animate(
           [
             {},
-            {width: '0', height: '0'}
+            {width: '0', height: '0', top: '50%', left: '50%'}
           ],
           {
-            duration: 100,
+            delay: 100,
+            duration: 150,
             fill: 'forwards'
           }
         );
-        ani.onfinish = () => onfinish?.();
+        ani.onfinish = () => {
+          ele.style.width = '0'
+          ele.style.height = '0'
+          onfinish?.();
+        }
         return;
       }
       onfinish?.();
@@ -194,14 +202,19 @@ export const to_circle = (ele: Element, radius: number, index: number, during: n
         const ani = ele.animate(
           [
             {},
-            {width: '0', height: '0'}
+            {width: '0', height: '0', top: '50%', left: '50%'}
           ],
           {
-            duration: 100,
+            delay: 100,
+            duration: 150,
             fill: 'forwards'
           }
         );
-        ani.oncancel = () => oncancel?.();
+        ani.oncancel = () => {
+          ele.style.width = '0'
+          ele.style.height = '0'
+          oncancel?.();
+        }
         return;
       }
       oncancel?.();
@@ -211,7 +224,7 @@ export const to_circle = (ele: Element, radius: number, index: number, during: n
 
 export const cancel_animations = (action?: () => void) => {
   for(let anim of animations) anim.cancel();
-
+  animations = [];
   if(!action) return;
   setTimeout(() => cancel_animations(), 50);
   setTimeout(() => action(), 50);
